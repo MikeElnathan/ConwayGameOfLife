@@ -14,7 +14,6 @@ public class Organism {
     public Organism(GamePanel panel){
         this.panel = panel;
         rand = new Random();
-        fillArray();
     }
 
     public void drawOrganism(Graphics g){
@@ -29,16 +28,6 @@ public class Organism {
             }
         }
         System.out.println(Arrays.deepToString(cellState));
-    }
-    public void drawGrid(Graphics g){
-        for(int i = 0; i < panel.screenHeight + 20; i+=cellSize){
-            g.setColor(Color.white);
-            g.drawLine(0, i, panel.screenHeight, i);
-        }
-        for(int j = 0; j < panel.screenWidth + 20; j+=cellSize){
-            g.setColor(Color.white);
-            g.drawLine(j, 0, j, panel.screenWidth);
-        }
     }
     boolean randomCellState(){
        int temp = rand.nextInt(20);
