@@ -10,18 +10,18 @@ public class Organism {
     int cellSize = 20;
     int organismSize = 10;
     int[][] cellState = new int[20][20];
+    int[][] holdState = new int[20][20];
     Random rand;
 
     public Organism(GamePanel panel){
         this.panel = panel;
         rand = new Random();
+        randomArray(cellState);
     }
 
     public void drawOrganism(Graphics g){
-        randomArray(cellState);
         for(int i = 0; i < cellState.length; i++){
             for(int j = 0; j < cellState.length; j++){
-                rulesApplied(cellState, i, j);
                 if(cellState[i][j] == 1){
                     int x = i*cellSize;
                     int y = j*cellSize;
@@ -55,19 +55,19 @@ public class Organism {
         sum -= cellState[x][y];
         return sum;
     }
-    int[][] rulesApplied(int[][] cellState, int x, int y){
-        int temp = returnSum(x, y, cellState);
-//        any live cell with fewer than two live neighbors, dies.
-//        any live cell with two or three live neighbors lives on to the next generation.
-//        any live cell with more than three live neighbors, dies.
-            if(cellState[x][y] == 1){
-                cellState[x][y] = (temp == 2 || temp ==3)? 1:0;
+    void updateState(){
+        for(int i = 0; i < cellState.length; i++){
+            for(int j = 0; j < cellState.length; j++){
+                int temp = returnSum(i, j, cellState);
+                if(cellState[i][j] == 1){
+                    holdState[i][j] = (temp == 2 || temp ==3)? 1:0;
+                }
+                else if(cellState[i][j] == 0){
+                    holdState[i][j] = (temp == 3)? 1:0;
+                }
             }
-//        any dead cell with exactly three live neighbor, will become a live cell
-            else if(cellState[x][y] == 0){
-                cellState[x][y] = (temp == 3)? 1:0;
-            }
-        return cellState;
+        }
+        cellState = holdState;
     }
 
 }
