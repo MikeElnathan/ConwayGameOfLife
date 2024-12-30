@@ -52,7 +52,6 @@ public class Organism {
                 }
             }
         }
-
         sum -= cellState[x][y];
         return sum;
     }
