@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.KBM.KeyboardInput;
+import org.example.KBM.MouseInput;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
@@ -22,6 +25,8 @@ public class Organism {
         cellState = new int[cellSize][cellSize];
         holdState = new int[cellSize][cellSize];
         rand = new Random();
+        new MouseInput(this);
+        new KeyboardInput(this);
         fillArray(cellState);
     }
     public void drawOrganism(Graphics g){
