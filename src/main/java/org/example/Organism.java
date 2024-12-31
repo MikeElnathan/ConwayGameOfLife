@@ -7,18 +7,23 @@ import java.util.Random;
 
 public class Organism {
     private final GamePanel panel;
-    int cellSize = 20;
-    int organismSize = 10;
-    int[][] cellState = new int[20][20];
-    int[][] holdState = new int[20][20];
+    int cellSize ;
+    int organismSize;
+    int cellOffset;
+    int[][] cellState;
+    int[][] holdState;
     Random rand;
 
     public Organism(GamePanel panel){
         this.panel = panel;
+        cellSize = panel.screenHeight/20;
+        organismSize = cellSize/2;
+        cellOffset = cellSize/4;
+        cellState = new int[cellSize][cellSize];
+        holdState = new int[cellSize][cellSize];
         rand = new Random();
-        randomArray(cellState);
+        fillArray(cellState);
     }
-
     public void drawOrganism(Graphics g){
         for(int i = 0; i < cellState.length; i++){
             for(int j = 0; j < cellState.length; j++){
@@ -26,19 +31,19 @@ public class Organism {
                     int x = i*cellSize;
                     int y = j*cellSize;
                     g.setColor(Color.red);
-                    g.fillRect((x + 5), (y + 5), organismSize, organismSize);
+                    g.fillRect((x + cellOffset), (y + cellOffset), organismSize, organismSize);
                 }
             }
         }
     }
-    int randomCellState(){
+    int howToFillArray(){
        int temp = rand.nextInt(20);
         return temp % 2 == 0? 1:0;
     }
-    void randomArray(int[][] cellState){
+    void fillArray(int[][] cellState){
         for(int i = 0; i < cellState.length; i++){
             for(int j = 0; j < cellState.length; j++){
-                cellState[i][j] = randomCellState();
+                cellState[i][j] = howToFillArray();
             }
         }
     }
@@ -55,7 +60,7 @@ public class Organism {
         sum -= cellState[x][y];
         return sum;
     }
-    void updateState(){
+    void applyRules(){
         for(int i = 0; i < cellState.length; i++){
             for(int j = 0; j < cellState.length; j++){
                 int temp = returnSum(i, j, cellState);
@@ -69,5 +74,7 @@ public class Organism {
         }
         cellState = holdState;
     }
-
+    void updateState(){
+        applyRules();
+    }
 }
