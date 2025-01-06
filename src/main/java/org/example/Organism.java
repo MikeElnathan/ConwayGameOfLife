@@ -49,15 +49,13 @@ public class Organism {
                 super.keyPressed(e);
                 if(e.getKeyCode() == KeyEvent.VK_SPACE){
                     playSimulation = !playSimulation;
-                    if(playSimulation){
-                        panel.statusText = "Simulation started";
-                    }else panel.statusText = "Simulation paused";
+                    panel.statusText = playSimulation? "Simulation started":"Simulation paused";
                 }
                 if(e.getKeyCode() == KeyEvent.VK_C){
                     for (int i = 0; i < cellState.length; i++){
                         for (int j = 0; j < cellState.length; j++){
                             cellState[i][j] = 0;
-                            panel.statusText = "Screen cleared";
+                            panel.statusText = "Simulation reset";
                         }
                     }
                 }
@@ -80,9 +78,7 @@ public class Organism {
 
         for(int i = (x - 1); i <= (x + 1); i++){
             for(int j = (y - 1); j <= (y + 1); j++){
-                int wrappedX = (i + cellState.length)%cellState.length;
-                int wrappedY = (j + cellState.length)%cellState.length;
-                sum += cellState[wrappedX][wrappedY];
+                sum += cellState[(i + cellState.length)%cellState.length][(j + cellState.length)%cellState.length];
             }
         }
         sum -= cellState[x][y];
@@ -104,10 +100,19 @@ public class Organism {
             System.arraycopy(holdState[i], 0, cellState[i], 0, cellState.length);
         }
     }
+    int countCell(){
+        int sum = 0;
+        for(int[] row : cellState){
+            for(int cell : row){
+                sum += cell;
+            }
+        }
+        return sum;
+    }
     void updateState(){
         if(playSimulation){
             applyRules();
-            System.out.println(playSimulation);
+            System.out.println("Living Organism: " + countCell());
         }
     }
 }

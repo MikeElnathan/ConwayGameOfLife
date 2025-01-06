@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel{
-    protected int screenHeight = 600;
-    protected int screenWidth = 600;
+    protected int screenHeight = 800;
+    protected int screenWidth = 800;
     Organism organism;
     String statusText;
     protected int statusScreenOffset = 24;
