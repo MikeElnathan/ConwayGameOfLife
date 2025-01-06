@@ -49,7 +49,17 @@ public class Organism {
                 super.keyPressed(e);
                 if(e.getKeyCode() == KeyEvent.VK_SPACE){
                     playSimulation = !playSimulation;
-                    System.out.println("play status: " + playSimulation);
+                    if(playSimulation){
+                        panel.statusText = "Simulation started";
+                    }else panel.statusText = "Simulation paused";
+                }
+                if(e.getKeyCode() == KeyEvent.VK_C){
+                    for (int i = 0; i < cellState.length; i++){
+                        for (int j = 0; j < cellState.length; j++){
+                            cellState[i][j] = 0;
+                            panel.statusText = "Screen cleared";
+                        }
+                    }
                 }
             }
         });
@@ -70,9 +80,9 @@ public class Organism {
 
         for(int i = (x - 1); i <= (x + 1); i++){
             for(int j = (y - 1); j <= (y + 1); j++){
-                if(i >= 0 && i < cellState.length &&  j >= 0 && j < cellState.length){
-                    sum += cellState[i][j];
-                }
+                int wrappedX = (i + cellState.length)%cellState.length;
+                int wrappedY = (j + cellState.length)%cellState.length;
+                sum += cellState[wrappedX][wrappedY];
             }
         }
         sum -= cellState[x][y];
