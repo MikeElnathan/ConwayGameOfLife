@@ -2,12 +2,10 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GamePanel extends JPanel{
-    protected int screenHeight = 400;
-    protected int screenWidth = 400;
+    protected int screenHeight = 800;
+    protected int screenWidth = 800;
     Organism organism;
 
     public GamePanel(){
@@ -31,7 +29,6 @@ public class GamePanel extends JPanel{
             g.drawLine(j, 0, j, screenWidth);
         }
     }
-
     void update(){
         organism.updateState();
     }

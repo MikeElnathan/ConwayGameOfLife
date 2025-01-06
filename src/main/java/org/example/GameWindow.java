@@ -13,10 +13,10 @@ public class GameWindow extends JFrame {
         panel = new GamePanel();
         setTitle("Conway Game of Life");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setResizable(false);
         this.add(panel);
         pack();
+        setLocationRelativeTo(null);
         update();
     }
     void update(){
@@ -26,7 +26,7 @@ public class GameWindow extends JFrame {
                 panel.update();
                 panel.repaint();
                 frames++;
-                System.out.println("Generation: " + frames);
+//                System.out.println("Generation: " + frames);
             }
         });
         timer.start();

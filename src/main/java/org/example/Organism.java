@@ -1,11 +1,10 @@
 package org.example;
 
-import org.example.KBM.KeyboardInput;
-import org.example.KBM.MouseInput;
-
-import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Random;
 
 public class Organism {
@@ -16,18 +15,20 @@ public class Organism {
     int[][] cellState;
     int[][] holdState;
     Random rand;
+    boolean playSimulation = false;
 
     public Organism(GamePanel panel){
         this.panel = panel;
-        cellSize = panel.screenHeight/20;
+        cellSize = 20;
         organismSize = cellSize/2;
         cellOffset = cellSize/4;
-        cellState = new int[cellSize][cellSize];
-        holdState = new int[cellSize][cellSize];
+        cellState = new int[panel.screenWidth/cellSize][panel.screenHeight/cellSize];
+        holdState = new int[panel.screenWidth/cellSize][panel.screenHeight/cellSize];
         rand = new Random();
-        new MouseInput(this);
-        new KeyboardInput(this);
-        fillArray(cellState);
+//        fillArray(cellState);
+        panel.setFocusable(true);
+        playPause();
+        drawArray();
     }
     public void drawOrganism(Graphics g){
         for(int i = 0; i < cellState.length; i++){
@@ -41,16 +42,28 @@ public class Organism {
             }
         }
     }
-    int howToFillArray(){
-       int temp = rand.nextInt(20);
-        return temp % 2 == 0? 1:0;
-    }
-    void fillArray(int[][] cellState){
-        for(int i = 0; i < cellState.length; i++){
-            for(int j = 0; j < cellState.length; j++){
-                cellState[i][j] = howToFillArray();
+    void playPause(){
+        panel.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                if(e.getKeyCode() == KeyEvent.VK_SPACE){
+                    playSimulation = !playSimulation;
+                    System.out.println("play status: " + playSimulation);
+                }
             }
-        }
+        });
+    }
+    void drawArray(){
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(!playSimulation){
+                    cellState[e.getX()/cellSize][e.getY()/cellSize] = 1;
+                }
+            }
+        });
     }
     int returnSum(int x, int y, int[][] cellState){
         int sum = 0;
@@ -77,9 +90,14 @@ public class Organism {
                 }
             }
         }
-        cellState = holdState;
+        for(int i = 0; i < cellState.length; i++){
+            System.arraycopy(holdState[i], 0, cellState[i], 0, cellState.length);
+        }
     }
     void updateState(){
-        applyRules();
+        if(playSimulation){
+            applyRules();
+            System.out.println(playSimulation);
+        }
     }
 }
