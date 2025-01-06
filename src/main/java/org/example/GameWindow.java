@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 public class GameWindow extends JFrame {
     Timer timer;
     GamePanel panel;
-    private int frames = 0;
 
     public GameWindow(){
         panel = new GamePanel();
@@ -25,7 +24,6 @@ public class GameWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 panel.update();
                 panel.repaint();
-                frames++;
 //                System.out.println("Generation: " + frames);
             }
         });
